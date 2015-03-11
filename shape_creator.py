@@ -49,15 +49,20 @@ def create_shapefile(polygon, id):
     sr.ImportFromEPSG(4326)
 
     layer = source.CreateLayer('bbox', sr, ogr.wkbPolygon)
-    id_field = ogr.FieldDefn("ID", ogr.OFTString)
-    id_field.SetWidth(25)
-    layer.CreateField(id_field)
+    # id_field = ogr.FieldDefn("ID", ogr.OFTString)
+    # id_field.SetWidth(25)
+    constant_field = ogr.FieldDefn("Constant", ogr.OFTInteger)
+    constant_field.SetWidth(2)
+
+    # layer.CreateField(id_field)
+    layer.CreateField(constant_field)
 
     feature = ogr.Feature(layer.GetLayerDefn())
 
     feature.SetGeometry(polygon)
+    # feature.SetField(0, id)
+    feature.SetField(0, 1)
     layer.CreateFeature(feature)
-
 
     feature.Destroy()
     source.Destroy()
@@ -76,7 +81,7 @@ def read_csv(my_csv):
 
             polygon = make_poly(bbox)
             create_shapefile(polygon, id)
-
+            break
 
 
 read_csv(csv_path)
