@@ -4,6 +4,7 @@ from gdalconst import *
 import os
 
 gdal.UseExceptions()
+__author__ = 'Steve Kochaver'
 
 def template_raster(base_raster_path, out_raster, data_type=gdal.GDT_Int32, no_data=-1):
     '''
@@ -93,7 +94,7 @@ def create_out_tiff(in_file, out_file, initial_shp):
 
 def burn_without_add(in_raster, in_shape):
     '''
-    Burn the values of a shapefile into a base raster. Replaces the values of the pixel in the raster rather then
+    Burn the values of a shapefile into a base raster. Replaces the values of the pixel in the raster rather than
     adding to them.
     :param in_raster: The path to the input raster.
     :param in_shape: The path to the shapefile with the geometries you care about.

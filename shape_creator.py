@@ -3,6 +3,8 @@ import csv
 import osr
 import os
 
+__author__ = 'Steve Kochaver'
+
 class Point:
     '''
     This is just a class to wrap latitudes and longitudes into a point. To be entirely honest the only reason this
