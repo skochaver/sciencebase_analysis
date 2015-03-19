@@ -92,6 +92,36 @@ def create_shapefile(polygon, id):
 
     return
 
+def create_point_file(lat, lon, id):
+
+    id_path = os.path.join(os.getcwd(), 'point_outputs', str(id)+'.shp')
+    driver = ogr.GetDriverByName("Esri Shapefile")
+    source = driver.CreateDataSource(id_path)
+
+    sr = osr.SpatialReference()
+    sr.ImportFromEPSG(4326)
+
+    layer = source.CreateLayer('center_point', sr, ogr.wkbPoint)
+
+    constant_field = ogr.FieldDefn("Constant", ogr.OFTInteger)
+    constant_field.SetWidth(2)
+
+    layer.CreateField(constant_field)
+
+    feature = ogr.Feature(layer.GetLayerDefn())
+
+    point = ogr.Geometry(ogr.wkbPoint)
+    point.AddPoint(lon, lat)
+    feature.SetGeometry(point)
+
+    feature.SetField(0, 1)
+    layer.CreateFeature(feature)
+
+    point = None
+    feature.Destroy()
+    source.Destroy()
+
+    return
 
 def read_csv(my_csv):
     '''
