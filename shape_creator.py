@@ -93,6 +93,13 @@ def create_shapefile(polygon, id):
     return
 
 def create_point_file(lat, lon, id):
+    '''
+    Creates a shapefile with a single centerpoint.
+    :param lat: Latitude (Decimal degrees EPSG:4326)
+    :param lon: Longitude (Decimal degrees EPSG:4326)
+    :param id: File name ID
+    :return: No return
+    '''
 
     id_path = os.path.join(os.getcwd(), 'point_outputs', str(id)+'.shp')
     driver = ogr.GetDriverByName("Esri Shapefile")
