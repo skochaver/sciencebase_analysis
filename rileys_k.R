@@ -12,7 +12,7 @@
   #setwd("c:/path/to/steves/working/directory/")
 
 # Read in point shape files for research intensity and university location data
-  research_intensity <- readOGR(".", "research_frequency_points") # Point data will be easier
+  research_intensity <- readOGR(getwd(), "albers_10km_majorityresample") # Point data will be easier
   uni_points <- readOGR(getwd(), "CollegesUniversities")
 
 
@@ -39,14 +39,20 @@
   # Combine the two datasets
     #all <- superimpose(university=uni, instensity=research, W="convex")  # Is convex window ok? It avoids the error where 5 points are rejected for lying outside the specified window.
     all <- superimpose(uni, research, W="convex")
-    all_cut <- cut(all, breaks=c(-1,0,332), labels=c("university","instensity"))
+    all_cut <- cut(all, breaks=c(-2,0,333), labels=c("university","instensity"))
   
 # Run Riley's K between univeristy point and resarch instance data. Loop through each instance value.
   #(k <- Kest(point.locations))
-  K <- linearKcross.inhom(all_cut, all_cut$marks=="university", all_cut$marks=="intensity")
+  #K <- Kcross(all_cut)  # Alternative to Kest
+  Kest <- Kest(all_cut, 20000)  # An r of 20000m is chosen to prespresent 20km or twice the minimum distance between points
 
 # Print out report for each Riley's K
+  write.table(Kest, file = "Kest.csv", sep = ",", row.names = FALSE)  # Ouput csv file containing result of Kest to working directory
 
 # Plot each K Statstic output on same axis.
+  png("Kest_plot.png", width=6, height = 6, units="in", res=600)  # Output png to working directory
+  plot(Kest)
+  dev.off()  # Need this to finish output
+  
 
 # Smooth across newly created 3d plane.
